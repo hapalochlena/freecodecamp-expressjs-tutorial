@@ -1,54 +1,78 @@
-const http = require('http')
-const { readFileSync } = require('fs');
+const express = require('express');
+const app = express();
 
-// WHY readFileSYNC AND NOT readFile ?
-// 1. We are not invoking this every time someone comes to the server
-// => we require the file when we instantiate our server * (when the server starts running); NOT when the request comes in
+// to do: import stuff from data.js and use it here
 
-// get all files
-const homePage = readFileSync('./navbar-app/index.html') // * HERE
-const homeStyles = readFileSync('./navbar-app/styles.css')
-const homeImage= readFileSync('./navbar-app/logo.svg')
-const homeLogic = readFileSync('./navbar-app/browser-app.js')
+const { products } = require('./data')
 
-const server = http.createServer((req, res) => {
-  // console.log(req.url);
-  const url = req.url
-  //  home page
-  if (url === '/') {
-    res.writeHead(200, {'content-type': 'text/html'})
-    res.write(homePage)
-    res.end();
-  // about page
-  } else if (url === '/about') {
-    res.writeHead(200, {'content-type': 'text/html'})
-    res.write('<h1>About Page</h1>')
-    res.end();
-  // styles
-  } else if (url === '/styles.css') {
-    res.writeHead(200, {'content-type': 'text/css'})
-    res.write(homeStyles)
-    res.end();
-  // logo
-  } else if (url === '/logo.svg') {
-    res.writeHead(200, {'content-type': 'image/svg+xml'})
-    res.write(homeImage)
-    res.end();
-  // logo
-  } else if (url === '/browser-app.js') {
-    res.writeHead(200, {'content-type': 'text/javascript'})
-    res.write(homeLogic)
-    res.end();
-  // 404
-  } else {
-    res.writeHead(404, {'content-type': 'text/html'})
-    res.write('<h1>Page Not Found</h1>')
-    res.end();
-  }
+
+app.get('/', (req, res) => {
+  // res.json([{ name: 'john' }, { name: 'susan' }])
+  res.send('<h1>Home Page</h1><a href="/api/products">Products</a>')
 })
 
-server.listen(3000)
+// only sending certain aspects of the products
+app.get('/api/products', (req, res) => {
+  const newProducts = products.map((product) => {
+    const {id,name,image} = product;  // ! pay attention to syntax
+    return {id,name,image}
+  })
+  res.json(newProducts)
+})
 
-// WHY EXPRESS?
-// Because if you have a website with tons of resources, you would need to set up
-// every single resource in this manner.
+// show only first product
+// app.get('/api/products/1', (req, res) => {
+//   const singleProduct = products.find((product) => product.id === 1)
+//   res.json(singleProduct)
+// })
+// OVERKILL => We can't set up a route like this for each of 400 products!
+// => instead use ROUTE PARAMETERS
+
+// route parameter:
+app.get('/api/products/:productID', (req, res) => {    // ! :param
+  console.log(req.params); // { productID: '1' }
+  const { productID } = req.params; // ! syntax
+  console.log(productID); // "2" (string!!)
+  console.log(Number(productID)); // 2 (number)
+  const singleProduct = products.find((product) => product.id === Number(productID)) // => not necessary if the id is already set up as a string instead of a number (= not in this case), which would be typical for databases
+
+  // give me the singleProduct, except if that product doesn't exist (because user has put in url e.g. "api/products/abc")
+  if (!singleProduct) {
+    return res.status(404).send("Product not found")
+  }
+
+  return res.json(singleProduct)
+})
+
+
+// ROUTE PARAMETERS can get way more complicated:
+app.get('/api/products/:productID/reviews/:reviewID', (req, res) => {
+  console.log(req.params)
+
+})
+
+// <––> QUERY STRING / URL PARAMETERS
+// => send small amounts of information to the server
+// People who set up the server decide what params will be accepted, and what functionality depends on them.
+
+// Here, we will set up a new route for the query params; later we will see how to combine both routes
+app.get('/api/v1/query', (req, res) => {
+  // console.log(req.query); // => console: { name: 'john', id: '2' }
+  const { search, limit } = req.query // ! interesting syntax => we are basically assuming here that 'search' and 'limit' might appear as query string params in the request; we check below in the if statement whether they actually do appear
+  let sortedProducts = [...products];
+
+  // If 'search' is in my query string parameters, then I want to filter my products
+  if (search) {
+    sortedProducts = sortedProducts
+  }
+
+  res.send('hello world')
+})
+// url: '/api/v1/query' => console: {}
+// url: 'http://localhost:3000/api/v1/query?name=john' => console: { name: 'john' }
+// url: 'http://localhost:3000/api/v1/query?search=a&limit=2' => ALL PRODUCTS THAT START WITH 'A'
+
+
+app.listen(3000, () => {
+  console.log('Server is listening on port 3000....');
+})
