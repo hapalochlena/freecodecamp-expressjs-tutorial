@@ -20,17 +20,19 @@ app.get('/api/products', (req, res) => {
   res.json(newProducts)
 })
 
-// show only first product
+// Show only first product
+
 // app.get('/api/products/1', (req, res) => {
 //   const singleProduct = products.find((product) => product.id === 1)
 //   res.json(singleProduct)
 // })
+
 // OVERKILL => We can't set up a route like this for each of 400 products!
 // => instead use ROUTE PARAMETERS
 
-// route parameter:
+// Route parameter:
 app.get('/api/products/:productID', (req, res) => {    // ! :param
-  console.log(req.params); // { productID: '1' }
+  console.log(req.params); // { productID: '2' }
   const { productID } = req.params; // ! syntax
   console.log(productID); // "2" (string!!)
   console.log(Number(productID)); // 2 (number)
@@ -77,16 +79,16 @@ app.get('/api/v1/query', (req, res) => {
     // res.status(200).send('no products matched your search')
 
     // more common:
-    return res.status(200).json({ success: true, data: [] }) // ! we need 'return' here so that the code stops here. otherwise we would have 2 responses (this one and the one below), which would throw an error
+    return res.status(200).json({ success: true, data: [] }) // ! we need 'return' here so that the code stops here. otherwise we would have 2 responses (this one and the one below, i.e. all the sortedProducts), which would throw an error
   }
 
   res.status(200).json(sortedProducts)
 
   // res.send('hello world')
 })
-// url: '/api/v1/query' => console: {}
+// url: 'http://localhost:3000/api/v1/query' => console: {}
 // url: 'http://localhost:3000/api/v1/query?name=john' => console: { name: 'john' }
-// url: 'http://localhost:3000/api/v1/query?search=a&limit=2' => ALL PRODUCTS THAT START WITH 'A'
+// url: 'http://localhost:3000/api/v1/query?search=a&limit=2' => FIRST TWO PRODUCTS THAT START WITH 'A'
 
 
 app.listen(3000, () => {
