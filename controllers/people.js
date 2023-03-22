@@ -1,22 +1,22 @@
-const express = require('express');
-// instead of app => router:
-const router = express.Router();
-
 let { people } = require('../data.js')
 
-router.get('/', (req, res) => {   // ! because we already have 'api/people' in app.js, we remove 'api/people' here to just '/'
+const getPeople = (req, res) => {
   res.status(200).json({ success: true, data: people })
-})
+}
+// copied + modified from routes/people.js:
+// router.get('/', (req, res) => {
+//   res.status(200).json({ success: true, data: people })
+// })
 
-router.post('/', (req, res) => {    // ! same here
+const createPerson = (req, res) => {
   const { name } = req.body
   if (!name) {
     return res.status(400).json({ success: false, msg: 'Please provide value' })
   }
   res.status(201).json({ success:true, person: name}) // 201 = successful post request
-})
+}
 
-router.post('/postman', (req, res) => {   // ! same here
+const createPersonPostman = (req, res) => {
   const { name } = req.body
   if (!name) {
     return res
@@ -24,9 +24,9 @@ router.post('/postman', (req, res) => {   // ! same here
       .json({ success: false, msg: 'Please provide value' })
   }
   res.status(201).json({ success:true, person: name})
-})
+}
 
-router.put('/:id', (req, res) => {    // ! same here
+const updatePerson = (req, res) => {
   const { id } = req.params
   const { name } = req.body
   // console.log(id, name);
@@ -45,9 +45,9 @@ router.put('/:id', (req, res) => {    // ! same here
     return person // all other original persons just get returned with their original name
   })
   res.status(200).json({ success: true, data: newPeople })
-})
+}
 
-router.delete('/:id', (req, res) => {    // ! same here
+const deletePerson = (req, res) => {
   const person = people.find((person) => person.id === Number(req.params.id))
   if (!person) {
     return res
@@ -56,6 +56,14 @@ router.delete('/:id', (req, res) => {    // ! same here
   }
   const newPeople = people.filter((person) => person.id !== Number(req.params.id) )
   res.status(200).json({ success: true, data: newPeople })
-})
+}
 
-module.exports = router
+
+
+module.exports = {
+  getPeople,
+  createPerson,
+  createPersonPostman,
+  updatePerson,
+  deletePerson
+}
