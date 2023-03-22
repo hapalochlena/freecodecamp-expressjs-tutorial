@@ -80,6 +80,7 @@ app.get('/api/v1/query', (req, res) => {
 
     // more common:
     return res.status(200).json({ success: true, data: [] }) // ! we need 'return' here so that the code stops here. otherwise we would have 2 responses (this one and the one below, i.e. all the sortedProducts), which would throw an error
+                                  // "success: true" = different way of saying "status(200)"
   }
 
   res.status(200).json(sortedProducts)
