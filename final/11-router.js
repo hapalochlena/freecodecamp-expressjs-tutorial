@@ -27,7 +27,7 @@ router.post('/postman', (req, res) => {   // ! same here
 })
 
 router.put('/:id', (req, res) => {    // ! same here
-  const { id } = req.params
+  const { id } = req–.params
   const { name } = req.body
   // console.log(id, name);
   // res.json({ success: true, data: {id, name}})

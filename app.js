@@ -1,11 +1,13 @@
 // Create FOLDER controllers
-// (Only people.js in there, because login only has 1 route anyways)
+// ! => Only people.js in there, because login only has 1 route anyways
 
 const express = require('express')
 const app = express()
 
-let people = require('./routes/people.js')
-const auth = require('./routes/auth.js')
+// * IMPORT THE ROUTES from Router
+let people = require('./routes/12-people-router.js')
+const auth = require('./routes/12-auth-router.js')
+// ***
 
 // static assets
 app.use(express.static('./methods-public'))
@@ -15,11 +17,10 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 
 
-// THIS NEW app.use INSTEAD OF ALL THE SINGLE ROUTES
-app.use('api/people', people) // ! because we already have 'api/people' here, we remove 'api/people' in people.js to just '/'
+// * THIS NEW app.use INSTEAD OF ALL THE SINGLE ROUTES
+app.use('/api/people', people) // ! because we already have 'api/people' here, we remove 'api/people' in people.js for ALL ROUTES to just '/'
 
-
-// Same for LOGIN:
+// * Same for LOGIN:
 app.use('/login', auth)
 
 

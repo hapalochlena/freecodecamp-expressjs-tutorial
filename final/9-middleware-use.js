@@ -5,10 +5,10 @@ const authorize = require('./authorize')
 
 const morgan = require('morgan') // example for third-party middleware function
 
-// app.use(logger)
+app.use(logger)
 // ... so we don't have to add "logger" as an argument to each single route!
 
-// app.use('/api', logger)
+app.use('/api', logger)
 // also provide path "/api" as argument
 // => logger will be applied to ANY route that comes after "/api", be it "home", "about", "products" ...
 
@@ -16,7 +16,7 @@ const morgan = require('morgan') // example for third-party middleware function
 // app.use(express.static('./public')) // example for express built-in middleware function
 app.use(morgan('tiny')) // example for third-party middleware function
 
-app.get('/', (req, res) => {  // ! logger = MIDDLEWARE
+app.get('/', (req, res) => {
   res.send('Home')
 })
 app.get('/about', (req, res) => {

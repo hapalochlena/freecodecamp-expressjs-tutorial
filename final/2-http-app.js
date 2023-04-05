@@ -34,7 +34,7 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, {'content-type': 'image/svg+xml'})
     res.write(homeImage)
     res.end();
-  // logo
+  // logic
   } else if (url === '/browser-app.js') {
     res.writeHead(200, {'content-type': 'text/javascript'})
     res.write(homeLogic)

@@ -3,7 +3,7 @@ const app = express();
 
 // to do: import stuff from data.js and use it here
 
-const { products } = require('./data')
+const { products } = require('../data')
 
 
 app.get('/', (req, res) => {
@@ -15,6 +15,10 @@ app.get('/', (req, res) => {
 app.get('/api/products', (req, res) => {
   const newProducts = products.map((product) => {
     const {id,name,image} = product;  // ! pay attention to syntax
+    // ! same as:
+      // const id = product.id
+      // const name = product.name
+      // const image = product.image
     return {id,name,image}
   })
   res.json(newProducts)
@@ -59,8 +63,11 @@ app.get('/api/products/:productID/reviews/:reviewID', (req, res) => {
 
 // Here, we will set up a new route for the query params; later we will see how to combine both routes
 app.get('/api/v1/query', (req, res) => {
-  // console.log(req.query); // => console: { name: 'john', id: '2' }
+  console.log(req.query); // url: /api/v1/query?name=john&id=4
+                          // => console: { name: 'john', id: '4' }
   const { search, limit } = req.query // ! interesting syntax => we are basically assuming here that 'search' and 'limit' might appear as query string params in the request; we check below in the if statement whether they actually do appear
+  console.log(search);
+  console.log(limit);
   let sortedProducts = [...products];
 
   // If 'search' is in my query string parameters, then I want to filter my products
@@ -74,7 +81,7 @@ app.get('/api/v1/query', (req, res) => {
     sortedProducts = sortedProducts.slice(0, Number(limit))
   }
 
-  // so we don't return an empty array:
+  // so it doesn't crash when search is empty:
   if (sortedProducts < 1) {   // = if the array of products we arrive at after the search and limit above is 0 i.e. empty
     // res.status(200).send('no products matched your search')
 

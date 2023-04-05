@@ -10,17 +10,13 @@ const {
   createPersonPostman,
   updatePerson,
   deletePerson
-} = require('../controllers/people.js')
+} = require('../controllers/12-people-controller.js')
 
-// router.get('/', (req, res) => {
-//   res.status(200).json({ success: true, data: people })
-// })
-// ! CODE REFACTORED => MOVED TO controllers/people.js
-// router.get('/', getPeople) // = just importing the callback function from controllers folder
-// router.post('/', createPerson)
-// router.post('/postman', createPersonPostman)
-// router.put('/:id', updatePerson)
-// router.delete('/:id', deletePerson)
+router.get('/', getPeople) // = just importing the callback function from controllers folder
+router.post('/', createPerson)
+router.post('/postman', createPersonPostman)
+router.put('/:id', updatePerson)
+router.delete('/:id', deletePerson)
 
 
 // ALTERNATIVE WAY of setting up the routes:

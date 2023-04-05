@@ -17,7 +17,7 @@ app.post('/login', (req, res) => {
   if (name) {
     return res.status(200).send(`Welcome ${name}`)
   }
-  res.status(401).send('Please provide credentials')
+  res.status(401).send('Please provide credentials') // 401 = unauthorized (?)
 })
 
 //
@@ -33,9 +33,9 @@ app.use(express.json())
 app.post('/api/people', (req, res) => {
   const { name } = req.body
   if (!name) {
-    return res.status(400).json({ success: false, msg: 'Please provide value' })
+    return res.status(400).json({ success: false, msg: 'Please provide value' }) // 400 = bad request
   }
-  res.status(201).json({ success:true, person: name}) // 201 = successful post request
+  res.status(201).json({ success: true, person: name}) // 201 = successful post request
 })
 
 //

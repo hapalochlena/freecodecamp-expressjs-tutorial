@@ -76,10 +76,10 @@
         try {
           const { data } = await axios.post('/api/people', { name: nameValue }) // AXIOS.POST => here we post the form result !!!
                                                           // { name: nameValue } = Axios syntax
-          const h5 = document.createElement('h5') // this is where the new submitted name gets added to the list of names
-          h5.textContent = data.person // this is where the new submitted name gets added to the list of names
-                          // data = one property of the huge object we get from Axios
-          result.appendChild(h5) // this is where the new submitted name gets added to the list of names
+          // this is where the new submitted name gets added to the list of names:
+          const h5 = document.createElement('h5')
+          h5.textContent = data.person // data = one property of the huge object we get from Axios
+          result.appendChild(h5)
         } catch (error) {
           // console.log(error.response)
           formAlert.textContent = error.response.data.msg

@@ -13,7 +13,7 @@ app.get('/api/people', (req, res) => {
 // INDEX.HTML CONTAINS FORM
 
 // create the middleware to actually handle the data that the form sends us
-// = parse form data => add data to req.body
+// = parse form data => add data to req.body with:
 app.use(express.urlencoded({ extended: false }))
 // => now the result of the form is stored in req.body !
 

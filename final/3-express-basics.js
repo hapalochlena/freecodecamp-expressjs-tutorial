@@ -7,9 +7,9 @@ const app = express();
 // app.post
 // app.put
 // app.delete
-// app.all => handles all HTTP arguments (get, post, put, delete)
-// app.use
-// app.listen
+// app.all => handles all HTTP arguments (get, post, put, delete); e.g. => for 404 response
+// app.use => use the static assets in ./public (html, css, svg, browser-side js)
+// app.listen => // same as http => server.listen()
 
 
 
